@@ -5,7 +5,7 @@ Applies Indian thumb rules to help you check if you're on track — across Prote
 
 ---
 
-## 📌 Features
+## Features
 
 - Based on thumb rules commonly used by financial planners in India
 - Clean tabular display with ranges and checkboxes
@@ -14,7 +14,7 @@ Applies Indian thumb rules to help you check if you're on track — across Prote
 
 ---
 
-## ▶️ How to Use
+## ▶ How to Use
 
 1. Open `smart_money_map.py` in Google Colab
 2. Run the notebook
@@ -26,7 +26,7 @@ Applies Indian thumb rules to help you check if you're on track — across Prote
 
 ---
 
-## 💼 Files
+## Files
 
 | File                | Purpose                                  |
 |---------------------|------------------------------------------|
@@ -36,7 +36,7 @@ Applies Indian thumb rules to help you check if you're on track — across Prote
 
 ---
 
-## 📌 Notes & Assumptions
+## Notes & Assumptions
 
 - Assumes ~25% of CTC goes toward tax and PF
 - Based on thumb rules — not formal financial advice
@@ -46,14 +46,15 @@ Applies Indian thumb rules to help you check if you're on track — across Prote
 
 ---
 
-## 👤 Author
+## Author
 
 **Sanjeev Nichani**  
-[LinkedIn]https://www.linkedin.com/in/sanjeev-nichani | [GitHub](https://github.com/SanjeevNichani)
-https://www.pragatipeople.com/
+LinkedIn=https://www.linkedin.com/in/sanjeev-nichani | GitHub=(https://github.com/SanjeevNichani)
+Website = https://www.pragatipeople.com/
 
 ---
 
-## 🛡️ License
+## 🛡License
 
 This project is licensed under the [MIT License](LICENSE).
+
