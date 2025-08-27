@@ -49,7 +49,7 @@ Applies Indian thumb rules to help you check if you're on track — across Prote
 ## Author
 
 **Sanjeev Nichani**  
-LinkedIn=https://www.linkedin.com/in/sanjeev-nichani <br>  GitHub=(https://github.com/SanjeevNichani) <br>
+LinkedIn=https://www.linkedin.com/in/sanjeev-nichani <br>  GitHub=https://github.com/SanjeevNichani <br>
 Website = https://www.pragatipeople.com/
 
 ---
@@ -57,5 +57,6 @@ Website = https://www.pragatipeople.com/
 ## 🛡License
 
 This project is licensed under the [MIT License](LICENSE).
+
 
 
