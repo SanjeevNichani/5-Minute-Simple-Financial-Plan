@@ -14,7 +14,7 @@ Applies Indian thumb rules to help you check if you're on track — across Prote
 
 ---
 
-## ▶ How to Use
+## How to Use
 
 1. Open `smart_money_map.py` in Google Colab
 2. Run the notebook
@@ -49,7 +49,7 @@ Applies Indian thumb rules to help you check if you're on track — across Prote
 ## Author
 
 **Sanjeev Nichani**  
-LinkedIn=https://www.linkedin.com/in/sanjeev-nichani | GitHub=(https://github.com/SanjeevNichani)
+LinkedIn=https://www.linkedin.com/in/sanjeev-nichani <br>  GitHub=(https://github.com/SanjeevNichani) <br>
 Website = https://www.pragatipeople.com/
 
 ---
@@ -57,4 +57,5 @@ Website = https://www.pragatipeople.com/
 ## 🛡License
 
 This project is licensed under the [MIT License](LICENSE).
+
 
