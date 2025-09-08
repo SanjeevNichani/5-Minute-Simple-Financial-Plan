@@ -63,7 +63,8 @@ def display_styled_df(df, start_idx):
 print("----------------------------------------------------")
 print("SMART MONEY MAP — Your Super Simple Financial Plan")
 print("----------------------------------------------------")
-print(f"Annual CTC Entered: ₹{ctc:.2f} LPA")
+print(f"Annual CTC entered: ₹{ctc:.2f} LPA")
+print(f"% Savings Rate entered: {savings_rate:.0f}")
 print(f"Monthly Take-Home: ₹{monthly_take_home*1e-5:.2f} Lakhs (Assumption: 25% deductions for PF+Tax)")
 print(f"Monthly Savings: ₹{savings_rate*1e-2*monthly_take_home*1e-3:.1f} K")
 
@@ -85,11 +86,11 @@ display(display_styled_df(df1, 1))
 # ---- Table 2: SPENDING SMART ----
 print("\n \033[1m FINANCIAL PLAN STAGE-2: SPENDING LIMITS\033[0m")
 df2 = pd.DataFrame({
-    "Category": ["Car Budget", "Home Purchase Price","All EMIs Combined"],
-    "Thumb Rule": ["≤ 60% of CTC","3–5× Annual CTC","≤ 45% of Monthly Take Home"],
-    "Min Value": ["----",f"₹{ctc*3*1e-2:.2f} Cr","----"],
-    "Max Value": [f"₹{ctc*0.6:.2f} L",f"₹{ctc*5*1e-2:.2f} Cr",f"₹{monthly_take_home*0.45*1e-3:.1f} K"],
-    "Within Range✔️": [checkbox]*3
+    "Category": ["Car Budget", "Home Purchase Price","Personal Loans + Credit Card Dues","All EMIs Combined"],
+    "Thumb Rule": ["≤ 60% of CTC","≤ 4× Annual CTC","Ideally zero","≤ 45% of Monthly Take Home"],
+    #"Min Value": ["----","----","----","----"],
+    "Max Value": [f"₹{ctc*0.6:.2f} L",f"₹{ctc*4*1e-2:.2f} Cr","Zero",f"₹{monthly_take_home*0.45*1e-3:.1f} K"],
+    "On Track✔️": [checkbox]*4
 })
 display(display_styled_df(df2, 4))
 
@@ -97,12 +98,12 @@ display(display_styled_df(df2, 4))
 print("\n \033[1m FINANCIAL PLAN STAGE-3: WEALTH BUILDING\033[0m")
 df3 = pd.DataFrame({
     "Category": ["Monthly SIP", "Retirement Corpus"],
-    "Thumb Rule": ["20–30% of CTC", "10–15× Annual CTC"],
+    "Thumb Rule": ["> 20% of CTC", ">10x Annual CTC"],
     "Min Value": [f"₹{ctc*0.20*1e2/12:.0f} K", f"₹{ctc*10*1e-2:.2f} Cr"],
-    "Max Value": [f"₹{ctc*0.30*1e2/12:.0f} K", f"₹{ctc*15*1e-2:.2f} Cr"],
-    "Within Range✔️": [checkbox]*2
+    #"Max Value": [f"₹{ctc*0.30*1e2/12:.0f} K", f"₹{ctc*15*1e-2:.2f} Cr"],
+    "On Track✔️": [checkbox]*2
 })
-display(display_styled_df(df3, 7))
+display(display_styled_df(df3, 8))
 
 # ---- Notes ----
 print("\n Notes & Assumptions")
