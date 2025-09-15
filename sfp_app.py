@@ -1,290 +1,158 @@
-# Smart Money Map - Streamlit Web App Version
 import streamlit as st
-import pandas as pd
 from datetime import datetime
+from fpdf import FPDF
+import base64
 
-# Page configuration
-st.set_page_config(
-    page_title="Smart Money Map",
-    page_icon="💰",
-    layout="wide"
-)
+# Set page config
+st.set_page_config(page_title="Smart Money Map", page_icon="💰", layout="wide")
 
-# Custom CSS for styling
+# Main Title
 st.markdown("""
-<style>
-.main-title {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    margin-bottom: 30px;
-}
-.notes-section {
-    background-color: #4A5568;
-    color: white;
-    padding: 20px;
-    border-radius: 15px;
-    margin: 20px 0;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# Main title with purple gradient background
-st.markdown("""
-<div class="main-title">
-    <h1>💰 SMART MONEY MAP</h1>
-    <h3>Get a Super Simple Financial Plan in 5 minutes!</h3>
-</div>
-""", unsafe_allow_html=True)
-
-# Intro text
-st.markdown("""
-Using your annual CTC and monthly savings rate,
-this tool gives you a quick snapshot of recommended saving, spending, and investing limits—based on popular financial thumb rules.
-It’s your first-draft financial plan and checklist.
-
-""")
-
-# User Input Section - 2 columns side by side with simple borders
-st.markdown("### Get Started")
-input_col1, input_col2 = st.columns(2)
-
-with input_col1:
-    with st.container(border=True):
-        st.markdown("#### 💰 Enter your Annual CTC (Lakhs)")
-        ctc_method = st.radio(
-            "Choose input method:",
-            ["Number Input", "Slider"],
-            key="ctc_method",
-            horizontal=True
-        )
-        
-        if ctc_method == "Number Input":
-            ctc = st.number_input(
-                "Enter your CTC:", 
-                min_value=0.0, 
-                value=25.0,
-                step=0.5,
-                help="Your gross annual income in lakhs"
-            )
-        else:
-            ctc = st.slider(
-                "Select your CTC:",
-                min_value=10.0,
-                max_value=100.0,
-                value=25.0,
-                step=1.0,
-                help="Your gross annual income in lakhs"
-            )
-
-with input_col2:
-    with st.container(border=True):
-        st.markdown("#### Enter your Savings Rate (%)")
-        savings_method = st.radio(
-            "Choose input method:",
-            ["Number Input", "Slider"],
-            key="savings_method", 
-            horizontal=True
-        )
-        
-        if savings_method == "Number Input":
-            savings_rate = st.number_input(
-                "Enter % you can save:", 
-                min_value=0.0, 
-                max_value=100.0,
-                value=50.0,
-                step=5.0,
-                help="What percentage of your monthly take-home can you save?"
-            )
-        else:
-            savings_rate = st.slider(
-                "Select % you can save:",
-                min_value=10.0,
-                max_value=100.0, 
-                value=50.0,
-                step=5.0,
-                help="What percentage of your monthly take-home can you save?"
-            )
-
-# Your original calculations (unchanged)
-monthly_take_home = 0.75 * ctc * 1e5 / 12  # assuming 25% deductions
-monthly_expenses = (100 - savings_rate) * 1e-2 * monthly_take_home
-
-# Calculated Metrics - 2 columns side by side with simple borders
-st.markdown("### 📈 Your Financial Summary")
-metric_col1, metric_col2 = st.columns(2)
-
-with metric_col1:
-    with st.container(border=True):
-        st.markdown("#### 💳 Monthly Take-Home")
-        st.markdown(f"### ₹{monthly_take_home*1e-5:.2f} L")
-        st.caption("*After 25% deductions for PF+Tax")
-
-with metric_col2:
-    with st.container(border=True):
-        st.markdown("#### 💰 Monthly Savings")
-        st.markdown(f"### ₹{savings_rate*1e-2*monthly_take_home*1e-3:.1f} K")
-        st.caption(f"*{savings_rate:.0f}% of your take-home salary")
-
-st.markdown("---")
-
-# Instructions
-st.info("💡 **How to use**: Check the boxes below for areas where you meet the suggested ranges. Your progress will be counted!")
-
-# Initialize session state for checkboxes
-if 'checkboxes' not in st.session_state:
-    st.session_state.checkboxes = [False] * 9  # 9 total checkboxes
-
-# Table 1: PROTECTION (replaces your df1)
-st.markdown("### 🛡️ STAGE 1: PROTECTION")
-
-# Create checkboxes for table 1
-col1, col2 = st.columns([4, 1])
-with col1:
-    df1 = pd.DataFrame({
-        "Category": ["Emergency Fund", "Health Insurance", "Life Insurance"],
-        "Thumb Rule": ["3–6× Monthly Expenses", "₹5L – ₹10L", "10–15× Annual CTC"],
-        "Min Value": [f"₹{monthly_expenses*3/1e5:.1f} L", "₹5L", f"₹{ctc*10*1e-2:.2f} Cr"],
-        "Max Value": [f"₹{monthly_expenses*6/1e5:.1f} L", "₹10L", f"₹{ctc*15*1e-2:.2f} Cr"]
-    })
-    st.dataframe(df1, use_container_width=True, hide_index=True)
-
-with col2:
-    st.markdown("**I'm on track:**")
-    st.session_state.checkboxes[0] = st.checkbox("Emergency Fund", key="check0")
-    st.session_state.checkboxes[1] = st.checkbox("Health Insurance", key="check1") 
-    st.session_state.checkboxes[2] = st.checkbox("Life Insurance", key="check2")
-
-# Table 2: SPENDING LIMITS (replaces your df2)
-st.markdown("### 💳 STAGE 2: SPENDING LIMITS")
-
-col3, col4 = st.columns([4, 1])
-with col3:
-    df2 = pd.DataFrame({
-        "Category": ["Car Budget", "Home Purchase Price", "Personal Loans + Credit Card Dues", "All EMIs Combined"],
-        "Thumb Rule": ["≤ 60% of CTC", "≤ 4× Annual CTC", "Ideally zero", "≤ 45% of Monthly Take Home"],
-        "Max Value": [f"₹{ctc*0.6:.2f} L", f"₹{ctc*4*1e-2:.2f} Cr", "Zero", f"₹{monthly_take_home*0.45*1e-3:.1f} K"]
-    })
-    st.dataframe(df2, use_container_width=True, hide_index=True)
-
-with col4:
-    st.markdown("**I'm on track:**")
-    st.session_state.checkboxes[3] = st.checkbox("Car Budget", key="check3")
-    st.session_state.checkboxes[4] = st.checkbox("Home Price", key="check4")
-    st.session_state.checkboxes[5] = st.checkbox("No Personal Loans", key="check5")
-    st.session_state.checkboxes[6] = st.checkbox("EMI Limit", key="check6")
-
-# Table 3: WEALTH BUILDING (replaces your df3)
-st.markdown("### 📈 STAGE 3: WEALTH BUILDING")
-
-col5, col6 = st.columns([4, 1])
-with col5:
-    df3 = pd.DataFrame({
-        "Category": ["Monthly SIP", "Retirement Corpus"],
-        "Thumb Rule": ["> 20% of CTC", ">10x Annual CTC"],
-        "Min Value": [f"₹{ctc*0.20*1e2/12:.0f} K", f"₹{ctc*10*1e-2:.2f} Cr"]
-    })
-    st.dataframe(df3, use_container_width=True, hide_index=True)
-
-with col6:
-    st.markdown("**I'm on track:**")
-    st.session_state.checkboxes[7] = st.checkbox("Monthly SIP", key="check7")
-    st.session_state.checkboxes[8] = st.checkbox("Retirement Planning", key="check8")
-
-# Count checked boxes and show progress
-total_checked = sum(st.session_state.checkboxes)
-st.markdown("---")
-st.success(f"🎯 **Progress: {total_checked}/9 thumb rules completed!**")
-
-# Notes section with grey styling and single column
-st.markdown("""
-<div class="notes-section">
-    <h3>📝 Notes & Assumptions</h3>
-    <div style="margin-top: 15px;">
-        <p><strong>💼 CTC:</strong> Gross annual income in LPA</p>
-        <p><strong>💰 Deductions:</strong> 25% assumed for tax + PF</p>
-        <p><strong>⚖️ Disclaimer:</strong> Thumb-rule suggestions, NOT personalized advice</p>
-        <p><strong>📊 Rounding:</strong> Values rounded to nearest ₹K, ₹L or ₹Cr</p>
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    padding: 20px; border-radius: 10px; text-align: center; color: white;">
+        <h1>💰 SMART MONEY MAP</h1>
+        <h3>Get a super simple financial plan in 5 minutes</h3>
     </div>
-</div>
 """, unsafe_allow_html=True)
 
-# Download functionality (NEW FEATURE!)
-st.markdown("---")
-today = datetime.now().strftime("%d-%b-%Y")
-st.markdown(f"📅 **Snapshot Date:** {today}")
+st.markdown("Using your annual CTC and savings rate, get personalized financial thumb-rule checks.")
 
-# Create detailed status for each rule
-rule_names = [
-    "Emergency Fund", "Health Insurance", "Life Insurance",
-    "Car Budget", "Home Purchase Price", "Personal Loans + Credit Cards", "All EMIs Combined",
-    "Monthly SIP", "Retirement Corpus Planning"
+# User Input
+st.markdown("### 🔢 Input Your Info")
+ctc = st.slider("Annual CTC (in ₹ Lakhs)", 10.0, 100.0, 25.0, step=1.0)
+savings_rate = st.slider("Savings Rate (%)", 10.0, 100.0, 50.0, step=5.0)
+
+# Calculations
+monthly_take_home = 0.75 * ctc * 1e5 / 12
+monthly_savings = (savings_rate / 100) * monthly_take_home
+monthly_expenses = monthly_take_home - monthly_savings
+
+# Rule definitions
+rules = [
+    {
+        "category": "Emergency Fund",
+        "rule": "3–6× Monthly Expenses",
+        "min": 3 * monthly_expenses,
+        "max": 6 * monthly_expenses,
+        "user_value": monthly_savings * 2  # Placeholder
+    },
+    {
+        "category": "Health Insurance",
+        "rule": "₹5L – ₹10L",
+        "min": 5e5,
+        "max": 10e5,
+        "user_value": 6e5  # Placeholder
+    },
+    {
+        "category": "Life Insurance",
+        "rule": "10–15× Annual CTC",
+        "min": 10 * ctc * 1e5,
+        "max": 15 * ctc * 1e5,
+        "user_value": 12 * ctc * 1e5  # Placeholder
+    },
+    {
+        "category": "Car Budget",
+        "rule": "≤ 60% of CTC",
+        "max": 0.6 * ctc * 1e5,
+        "user_value": 0.5 * ctc * 1e5
+    },
+    {
+        "category": "Home Purchase",
+        "rule": "≤ 4× Annual CTC",
+        "max": 4 * ctc * 1e5,
+        "user_value": 3 * ctc * 1e5
+    },
+    {
+        "category": "Personal Loans + Credit Cards",
+        "rule": "Ideally zero",
+        "max": 0,
+        "user_value": 0  # Assume no loans
+    },
+    {
+        "category": "Total EMIs",
+        "rule": "≤ 45% of Take-Home",
+        "max": 0.45 * monthly_take_home,
+        "user_value": 0.4 * monthly_take_home
+    },
+    {
+        "category": "Monthly SIP",
+        "rule": "> 20% of CTC (Annual)",
+        "min": 0.20 * ctc * 1e5 / 12,
+        "user_value": monthly_savings
+    },
+    {
+        "category": "Retirement Corpus",
+        "rule": "> 10× Annual CTC",
+        "min": 10 * ctc * 1e5,
+        "user_value": 11 * ctc * 1e5
+    }
 ]
 
-rule_details = [
-    f"Emergency Fund: {monthly_expenses*3/1e5:.1f}L - {monthly_expenses*6/1e5:.1f}L",
-    "Health Insurance: ₹5L - ₹10L",
-    f"Life Insurance: {ctc*10*1e-2:.2f}Cr - {ctc*15*1e-2:.2f}Cr",
-    f"Car Budget: ≤ ₹{ctc*0.6:.2f}L",
-    f"Home Purchase: ≤ ₹{ctc*4*1e-2:.2f}Cr", 
-    "Personal Loans & Credit Cards: Zero",
-    f"Total EMIs: ≤ ₹{monthly_take_home*0.45*1e-3:.1f}K",
-    f"Monthly SIP: > ₹{ctc*0.20*1e2/12:.0f}K",
-    f"Retirement Corpus: > ₹{ctc*10*1e-2:.2f}Cr"
-]
+# Evaluate rules
+def evaluate_rule(rule):
+    if "min" in rule and "max" in rule:
+        if rule["min"] <= rule["user_value"] <= rule["max"]:
+            return "🟢 On Track"
+        elif rule["user_value"] >= 0.5 * rule["min"]:
+            return "🟡 Almost There"
+        else:
+            return "🔴 Needs Attention"
+    elif "min" in rule:
+        return "🟢 On Track" if rule["user_value"] >= rule["min"] else "🔴 Needs Attention"
+    elif "max" in rule:
+        return "🟢 On Track" if rule["user_value"] <= rule["max"] else "🔴 Needs Attention"
+    return "❓"
 
-# Create a summary for download with checkbox status
-summary_text = f"""
-SMART MONEY MAP - Financial Plan Summary
-Generated on: {today}
+# Display Results
+st.markdown("### 📊 Your Financial Rule Check")
 
-INPUT DETAILS:
-- Annual CTC: ₹{ctc:.2f} L
-- Savings Rate: {savings_rate:.0f}%
-- Monthly Take-Home: ₹{monthly_take_home*1e-5:.2f} L
-- Monthly Savings: ₹{savings_rate*1e-2*monthly_take_home*1e-3:.1f} K
+met_count = 0
+for r in rules:
+    status = evaluate_rule(r)
+    if status.startswith("🟢"):
+        met_count += 1
+    st.write(f"**{r['category']}** — {r['rule']} → **{status}**")
 
-THUMB RULE CHECKLIST:
-"""
+st.success(f"🎯 You’ve met {met_count}/9 financial thumb rules.")
 
-# Add each rule with Met/Not Met status
-for i, (name, detail) in enumerate(zip(rule_names, rule_details)):
-    status = "✅ MET" if st.session_state.checkboxes[i] else "❌ NOT MET"
-    summary_text += f"{i+1}. {detail} - {status}\n"
+# PDF generation
+class PDF(FPDF):
+    def header(self):
+        self.set_font("Arial", 'B', 14)
+        self.cell(0, 10, "Smart Money Map – Financial Summary", ln=True, align='C')
 
-summary_text += f"""
-PROGRESS SUMMARY: {total_checked}/9 thumb rules completed
+    def footer(self):
+        self.set_y(-15)
+        self.set_font("Arial", 'I', 8)
+        self.cell(0, 10, f"Generated on {datetime.now().strftime('%d-%b-%Y')}", 0, 0, 'C')
 
-"""
+    def add_summary(self, ctc, savings_rate, monthly_take_home, monthly_savings, rules):
+        self.set_font("Arial", size=12)
+        self.ln(10)
+        self.cell(0, 10, f"Annual CTC: ₹{ctc:.2f} L", ln=True)
+        self.cell(0, 10, f"Savings Rate: {savings_rate:.0f}%", ln=True)
+        self.cell(0, 10, f"Monthly Take-Home: ₹{monthly_take_home/1e5:.2f} L", ln=True)
+        self.cell(0, 10, f"Monthly Savings: ₹{monthly_savings/1e3:.1f} K", ln=True)
+        self.ln(5)
 
-# Add congratulations text at the bottom
-congratulations_text = ""
-if total_checked == 9:
-    congratulations_text = f"🎉 CONGRATULATIONS! You've completed all {total_checked} out of 9 thumb rules. You're on an excellent financial track!"
-elif total_checked >= 6:
-    congratulations_text = f"👏 Great progress! You've completed {total_checked} out of 9 thumb rules. You're doing well financially."
-elif total_checked >= 3:
-    congratulations_text = f"👍 Good start! You've completed {total_checked} out of 9 thumb rules. Keep working on the remaining areas."
-else:
-    congratulations_text = f"💪 You've completed {total_checked} out of 9 thumb rules. There's room for improvement - focus on the basics first!"
+        self.set_font("Arial", 'B', 12)
+        self.cell(0, 10, "Rule Check Summary:", ln=True)
+        self.set_font("Arial", size=11)
 
-summary_text += f"""{congratulations_text}
+        for r in rules:
+            status = evaluate_rule(r)
+            self.multi_cell(0, 8, f"- {r['category']} ({r['rule']}): {status}")
 
-NOTES:
-- CTC is gross annual income in LPA
-- 25% deductions assumed for tax + PF
-- These are thumb-rule suggestions, NOT personalized financial advice
-- All values rounded to nearest ₹K, ₹L or ₹Cr as needed
-"""
+        self.ln(5)
+        self.set_font("Arial", 'B', 12)
+        self.cell(0, 10, f"Progress: {met_count}/9 rules met", ln=True)
 
-st.download_button(
-    label="📄 Download Your Financial Plan",
-    data=summary_text,
-    file_name=f"financial_plan_{today}.txt",
-    mime="text/plain"
-)
+# Create and serve PDF
+pdf = PDF()
+pdf.add_page()
+pdf.add_summary(ctc, savings_rate, monthly_take_home, monthly_savings, rules)
+pdf_output = pdf.output(dest='S').encode('latin-1')
 
-# Footer
-st.markdown("---")
+b64_pdf = base64.b64encode(pdf_output).decode()
+href = f'<a href="data:application/octet-stream;base64,{b64_pdf}" download="Smart_Money_Map.pdf">📄 Download Your Financial Plan (PDF)</a>'
+st.markdown(href, unsafe_allow_html=True)
