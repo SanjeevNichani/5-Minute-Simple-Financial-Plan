@@ -1,3 +1,4 @@
 pandas
 tabulate
-fpdp
+streamlit>=1.35
+
