@@ -199,16 +199,7 @@ rule_details = [
     f"Retirement Corpus: > ₹{ctc*10*1e-2:.2f}Cr"
 ]
 
-# Create a summary for download with checkbox status
-congratulations_text = ""
-if total_checked == 9:
-    congratulations_text = f"🎉 CONGRATULATIONS! You've completed all {total_checked} out of 9 thumb rules. You're on an excellent financial track!"
-elif total_checked >= 6:
-    congratulations_text = f"👏 Great progress! You've completed {total_checked} out of 9 thumb rules. You're doing well financially."
-elif total_checked >= 3:
-    congratulations_text = f"👍 Good start! You've completed {total_checked} out of 9 thumb rules. Keep working on the remaining areas."
-else:
-    congratulations_text = f"💪 You've completed {total_checked} out of 9 thumb rules. There's room for improvement - focus on the basics first!"
+
 
 summary_text = f"""
 SMART MONEY MAP - Financial Plan Summary
@@ -233,6 +224,17 @@ for i, (name, detail) in enumerate(zip(rule_names, rule_details)):
 summary_text += f"""
 PROGRESS SUMMARY: {total_checked}/9 thumb rules completed
 
+# Create a summary for download with checkbox status
+congratulations_text = ""
+if total_checked == 9:
+    congratulations_text = f"🎉 CONGRATULATIONS! You've completed all {total_checked} out of 9 thumb rules. You're on an excellent financial track!"
+elif total_checked >= 6:
+    congratulations_text = f"👏 Great progress! You've completed {total_checked} out of 9 thumb rules. You're doing well financially."
+elif total_checked >= 3:
+    congratulations_text = f"👍 Good start! You've completed {total_checked} out of 9 thumb rules. Keep working on the remaining areas."
+else:
+    congratulations_text = f"💪 You've completed {total_checked} out of 9 thumb rules. There's room for improvement - focus on the basics first!"
+    
 NOTES:
 - CTC is gross annual income in LPA
 - 25% deductions assumed for tax + PF
