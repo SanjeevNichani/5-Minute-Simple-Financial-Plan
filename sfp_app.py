@@ -252,4 +252,3 @@ st.download_button(
 
 # Footer
 st.markdown("---")
-st.markdown("*💡 Save this page or download the summary for future reference!*")
