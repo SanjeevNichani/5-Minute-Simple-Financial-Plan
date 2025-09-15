@@ -34,18 +34,18 @@ st.markdown("""
 # Main title with purple gradient background
 st.markdown("""
 <div class="main-title">
-    <h1>💰 5 Minute Financial Plan</h1>
+    <h1>⚡ 5 Minute Financial Plan ⚡</h1>
     <h3> No Jargon, No Fluff. Just a Super Simple Plan!</h3>
 </div>
 """, unsafe_allow_html=True)
 
 # Intro text
 st.markdown("""
-Let’s make your money work for you!<br>
 Using your income and saving-rate% , this app recommends practical limits for your saving, spending and investing.<br><br>
-NO phone number/email required!.
+NO phone number/email required!
 """, unsafe_allow_html=True)
 
+st.markdown("---")
 
 # User Input Section - 2 columns side by side with simple borders
 st.markdown("### 🧍 Let's Start With Your Details")
@@ -211,16 +211,17 @@ Generated on: {today}
 INPUT DETAILS:
 - Annual CTC: ₹{ctc:.2f} L
 - Savings Rate: {savings_rate:.0f}%
+MONTHLY CASHFLOWS:
 - Monthly Take-Home: ₹{monthly_take_home*1e-5:.2f} L
 - Monthly Savings: ₹{savings_rate*1e-2*monthly_take_home*1e-3:.1f} K
 
-THUMB RULE CHECKLIST:
+CHECKLIST:
 """
 
 # Add each rule with Met/Not Met status
 for i, (name, detail) in enumerate(zip(rule_names, rule_details)):
     status = "✅ MET" if st.session_state.checkboxes[i] else "❌ NOT MET"
-    summary_text += f"{i+1}. {detail} - {status}\n"
+    summary_text += f"{i+1}. {detail} :  {status}\n"
 
 summary_text += f"""
 🎯 **Great: You've fulfilled {total_checked} out of 9 thumb rules!
