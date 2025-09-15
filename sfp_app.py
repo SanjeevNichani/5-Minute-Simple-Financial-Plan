@@ -48,33 +48,33 @@ Think of it as your first-draft financial plan and checklist.
 """)
 
 # User Input Section - 2 columns side by side with simple borders
-st.markdown("### Let's start with Your Details")
+st.markdown("### 👤 Let's Start With Your Details")
 input_col1, input_col2 = st.columns(2)
 
 with input_col1:
     with st.container(border=True):
         st.markdown("#### 💰 Enter your Annual CTC (Lakhs)")
-         ctc = st.slider(
-        "Select your CTC:",
-        min_value=10.0,
-        max_value=100.0,
-        value=25.0,
-        step=1.0,
-        help="Your gross annual income in lakhs"
-    )
+        ctc = st.slider(
+            "Select your CTC:",
+            min_value=10.0,
+            max_value=100.0,
+            value=25.0,
+            step=1.0,
+            help="Your gross annual income in lakhs"
+        )
 
 with input_col2:
     with st.container(border=True):
-        st.markdown("#### How much % can you save")
-       
-    savings_rate = st.slider(
-        "Select % you can save:",
-        min_value=10.0,
-        max_value=100.0, 
-        value=50.0,
-        step=5.0,
-        help="What percentage of your monthly take-home can you save?"
-    )
+        st.markdown("#### 💸 How much % can you save")
+        savings_rate = st.slider(
+            "Select % you can save:",
+            min_value=10.0,
+            max_value=100.0, 
+            value=50.0,
+            step=5.0,
+            help="What percentage of your monthly take-home can you save?"
+        )
+
 
 # Your original calculations (unchanged)
 monthly_take_home = 0.75 * ctc * 1e5 / 12  # assuming 25% deductions
