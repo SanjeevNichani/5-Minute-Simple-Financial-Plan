@@ -14,30 +14,15 @@ st.set_page_config(
 st.markdown("""
 <style>
 .main-title {
-    background-color: #4A5568;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     margin-bottom: 30px;
 }
-.input-tile {
-    background-color: #F7FAFC;
-    border: 1px solid #E2E8F0;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px 0;
-}
-.metric-tile {
-    background-color: #EDF2F7;
-    border: 1px solid #CBD5E0;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 5px 0;
-    text-align: center;
-}
 .notes-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-color: #4A5568;
     color: white;
     padding: 20px;
     border-radius: 15px;
@@ -46,104 +31,102 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Main title with grey background
+# Main title with purple gradient background
 st.markdown("""
 <div class="main-title">
-    <h1> SMART MONEY MAP</h1>
+    <h1>💰 SMART MONEY MAP</h1>
     <h3>Get a Super Simple Financial Plan in 5 minutes!</h3>
 </div>
 """, unsafe_allow_html=True)
 
 # Intro text
 st.markdown("""
-Enter your CTC and savings rate below, and this tool will show you saving, spending, and investing limits 
-based on widely accepted financial "thumb rules". Think of it as your first-cut financial plan and checklist.
+Using your annual CTC and monthly savings rate,
+this tool gives you a quick snapshot of recommended saving, spending, and investing limits—based on popular financial thumb rules.
+It’s your first-draft financial plan and checklist.
+
 """)
 
-# User Input Section - 2 tiles side by side
-st.markdown("### 📊 Enter Your Details")
+# User Input Section - 2 columns side by side with simple borders
+st.markdown("### Get Started")
 input_col1, input_col2 = st.columns(2)
 
 with input_col1:
-    st.markdown('<div class="input-tile">', unsafe_allow_html=True)
-    st.markdown("#### 💰 Annual CTC (Lakhs)")
-    ctc_method = st.radio(
-        "Choose input method:",
-        ["Number Input", "Slider"],
-        key="ctc_method",
-        horizontal=True
-    )
-    
-    if ctc_method == "Number Input":
-        ctc = st.number_input(
-            "Enter your CTC:", 
-            min_value=0.0, 
-            value=25.0,
-            step=0.5,
-            help="Your gross annual income in lakhs"
+    with st.container(border=True):
+        st.markdown("#### 💰 Enter your Annual CTC (Lakhs)")
+        ctc_method = st.radio(
+            "Choose input method:",
+            ["Number Input", "Slider"],
+            key="ctc_method",
+            horizontal=True
         )
-    else:
-        ctc = st.slider(
-            "Select your CTC:",
-            min_value=10.0,
-            max_value=100.0,
-            value=25.0,
-            step=1.0,
-            help="Your gross annual income in lakhs"
-        )
-    st.markdown('</div>', unsafe_allow_html=True)
+        
+        if ctc_method == "Number Input":
+            ctc = st.number_input(
+                "Enter your CTC:", 
+                min_value=0.0, 
+                value=25.0,
+                step=0.5,
+                help="Your gross annual income in lakhs"
+            )
+        else:
+            ctc = st.slider(
+                "Select your CTC:",
+                min_value=10.0,
+                max_value=100.0,
+                value=25.0,
+                step=1.0,
+                help="Your gross annual income in lakhs"
+            )
 
 with input_col2:
-    st.markdown('<div class="input-tile">', unsafe_allow_html=True)
-    st.markdown("#### 💵 Savings Rate (%)")
-    savings_method = st.radio(
-        "Choose input method:",
-        ["Number Input", "Slider"],
-        key="savings_method", 
-        horizontal=True
-    )
-    
-    if savings_method == "Number Input":
-        savings_rate = st.number_input(
-            "Enter % you can save:", 
-            min_value=0.0, 
-            max_value=100.0,
-            value=50.0,
-            step=5.0,
-            help="What percentage of your monthly take-home can you save?"
+    with st.container(border=True):
+        st.markdown("#### Enter your Savings Rate (%)")
+        savings_method = st.radio(
+            "Choose input method:",
+            ["Number Input", "Slider"],
+            key="savings_method", 
+            horizontal=True
         )
-    else:
-        savings_rate = st.slider(
-            "Select % you can save:",
-            min_value=10.0,
-            max_value=100.0, 
-            value=50.0,
-            step=5.0,
-            help="What percentage of your monthly take-home can you save?"
-        )
-    st.markdown('</div>', unsafe_allow_html=True)
+        
+        if savings_method == "Number Input":
+            savings_rate = st.number_input(
+                "Enter % you can save:", 
+                min_value=0.0, 
+                max_value=100.0,
+                value=50.0,
+                step=5.0,
+                help="What percentage of your monthly take-home can you save?"
+            )
+        else:
+            savings_rate = st.slider(
+                "Select % you can save:",
+                min_value=10.0,
+                max_value=100.0, 
+                value=50.0,
+                step=5.0,
+                help="What percentage of your monthly take-home can you save?"
+            )
 
 # Your original calculations (unchanged)
 monthly_take_home = 0.75 * ctc * 1e5 / 12  # assuming 25% deductions
 monthly_expenses = (100 - savings_rate) * 1e-2 * monthly_take_home
 
-# Calculated Metrics - 2 tiles side by side
+# Calculated Metrics - 2 columns side by side with simple borders
 st.markdown("### 📈 Your Financial Summary")
 metric_col1, metric_col2 = st.columns(2)
 
 with metric_col1:
-    st.markdown('<div class="metric-tile">', unsafe_allow_html=True)
-    st.markdown("#### 💳 Monthly Take-Home")
-    st.markdown(f"### ₹{monthly_take_home*1e-5:.2f} L")
-    st.caption("*After 25% deductions for PF+Tax")
-    st.markdown('</div>', unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown("#### 💳 Monthly Take-Home")
+        st.markdown(f"### ₹{monthly_take_home*1e-5:.2f} L")
+        st.caption("*After 25% deductions for PF+Tax")
 
 with metric_col2:
-    st.markdown('<div class="metric-tile">', unsafe_allow_html=True)
-    st.markdown("#### 💰 Monthly Savings")
-    st.markdown(f"### ₹{savings_rate*1e-2*monthly_take_home*1e-3:.1f} K")
-    st.caption(f"*{savings_rate:.0f}% of your take-home salary")
-    st.markdown('</div>', unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown("#### 💰 Monthly Savings")
+        st.markdown(f"### ₹{savings_rate*1e-2*monthly_take_home*1e-3:.1f} K")
+        st.caption(f"*{savings_rate:.0f}% of your take-home salary")
 
 st.markdown("---")
 
@@ -215,19 +198,15 @@ total_checked = sum(st.session_state.checkboxes)
 st.markdown("---")
 st.success(f"🎯 **Progress: {total_checked}/9 thumb rules completed!**")
 
-# Notes section with attractive styling
+# Notes section with grey styling and single column
 st.markdown("""
 <div class="notes-section">
     <h3>📝 Notes & Assumptions</h3>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
-        <div>
-            <p><strong>💼 CTC:</strong> Gross annual income in LPA</p>
-            <p><strong>💰 Deductions:</strong> 25% assumed for tax + PF</p>
-        </div>
-        <div>
-            <p><strong>⚖️ Disclaimer:</strong> Thumb-rule suggestions, NOT personalized advice</p>
-            <p><strong>📊 Rounding:</strong> Values rounded to nearest ₹K, ₹L or ₹Cr</p>
-        </div>
+    <div style="margin-top: 15px;">
+        <p><strong>💼 CTC:</strong> Gross annual income in LPA</p>
+        <p><strong>💰 Deductions:</strong> 25% assumed for tax + PF</p>
+        <p><strong>⚖️ Disclaimer:</strong> Thumb-rule suggestions, NOT personalized advice</p>
+        <p><strong>📊 Rounding:</strong> Values rounded to nearest ₹K, ₹L or ₹Cr</p>
     </div>
 </div>
 """, unsafe_allow_html=True)
