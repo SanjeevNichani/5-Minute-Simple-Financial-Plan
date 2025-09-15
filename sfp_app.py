@@ -1,158 +1,153 @@
 import streamlit as st
 from datetime import datetime
-from fpdf import FPDF
-import base64
 
 # Set page config
 st.set_page_config(page_title="Smart Money Map", page_icon="💰", layout="wide")
 
-# Main Title
+# Header
 st.markdown("""
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 20px; border-radius: 10px; text-align: center; color: white;">
         <h1>💰 SMART MONEY MAP</h1>
-        <h3>Get a super simple financial plan in 5 minutes</h3>
+        <h3>Get a Super Simple Financial Plan in 5 Minutes</h3>
     </div>
 """, unsafe_allow_html=True)
 
-st.markdown("Using your annual CTC and savings rate, get personalized financial thumb-rule checks.")
+st.markdown("Using your annual CTC and savings rate, get personalized thumb-rule guidance across protection, spending, and wealth-building.")
 
-# User Input
-st.markdown("### 🔢 Input Your Info")
-ctc = st.slider("Annual CTC (in ₹ Lakhs)", 10.0, 100.0, 25.0, step=1.0)
-savings_rate = st.slider("Savings Rate (%)", 10.0, 100.0, 50.0, step=5.0)
+# User input
+st.markdown("### 👤 Enter Your Info")
+ctc = st.slider("Annual CTC (₹ Lakhs)", 10.0, 100.0, 25.0, step=1.0)
+savings_rate = st.slider("Monthly Savings Rate (%)", 10.0, 100.0, 50.0, step=5.0)
 
 # Calculations
 monthly_take_home = 0.75 * ctc * 1e5 / 12
 monthly_savings = (savings_rate / 100) * monthly_take_home
 monthly_expenses = monthly_take_home - monthly_savings
 
-# Rule definitions
+# Define rules
 rules = [
     {
-        "category": "Emergency Fund",
+        "name": "Emergency Fund",
         "rule": "3–6× Monthly Expenses",
         "min": 3 * monthly_expenses,
         "max": 6 * monthly_expenses,
-        "user_value": monthly_savings * 2  # Placeholder
+        "user": 4 * monthly_expenses
     },
     {
-        "category": "Health Insurance",
+        "name": "Health Insurance",
         "rule": "₹5L – ₹10L",
         "min": 5e5,
         "max": 10e5,
-        "user_value": 6e5  # Placeholder
+        "user": 6e5
     },
     {
-        "category": "Life Insurance",
+        "name": "Life Insurance",
         "rule": "10–15× Annual CTC",
         "min": 10 * ctc * 1e5,
         "max": 15 * ctc * 1e5,
-        "user_value": 12 * ctc * 1e5  # Placeholder
+        "user": 12 * ctc * 1e5
     },
     {
-        "category": "Car Budget",
+        "name": "Car Budget",
         "rule": "≤ 60% of CTC",
         "max": 0.6 * ctc * 1e5,
-        "user_value": 0.5 * ctc * 1e5
+        "user": 0.5 * ctc * 1e5
     },
     {
-        "category": "Home Purchase",
-        "rule": "≤ 4× Annual CTC",
+        "name": "Home Purchase",
+        "rule": "≤ 4× CTC",
         "max": 4 * ctc * 1e5,
-        "user_value": 3 * ctc * 1e5
+        "user": 3 * ctc * 1e5
     },
     {
-        "category": "Personal Loans + Credit Cards",
+        "name": "Personal Loans + Credit Cards",
         "rule": "Ideally zero",
         "max": 0,
-        "user_value": 0  # Assume no loans
+        "user": 0
     },
     {
-        "category": "Total EMIs",
+        "name": "All EMIs",
         "rule": "≤ 45% of Take-Home",
         "max": 0.45 * monthly_take_home,
-        "user_value": 0.4 * monthly_take_home
+        "user": 0.4 * monthly_take_home
     },
     {
-        "category": "Monthly SIP",
-        "rule": "> 20% of CTC (Annual)",
+        "name": "Monthly SIP",
+        "rule": "> 20% of CTC",
         "min": 0.20 * ctc * 1e5 / 12,
-        "user_value": monthly_savings
+        "user": monthly_savings
     },
     {
-        "category": "Retirement Corpus",
-        "rule": "> 10× Annual CTC",
+        "name": "Retirement Corpus",
+        "rule": "> 10× CTC",
         "min": 10 * ctc * 1e5,
-        "user_value": 11 * ctc * 1e5
+        "user": 11 * ctc * 1e5
     }
 ]
 
-# Evaluate rules
-def evaluate_rule(rule):
-    if "min" in rule and "max" in rule:
-        if rule["min"] <= rule["user_value"] <= rule["max"]:
-            return "🟢 On Track"
-        elif rule["user_value"] >= 0.5 * rule["min"]:
-            return "🟡 Almost There"
-        else:
-            return "🔴 Needs Attention"
-    elif "min" in rule:
-        return "🟢 On Track" if rule["user_value"] >= rule["min"] else "🔴 Needs Attention"
-    elif "max" in rule:
-        return "🟢 On Track" if rule["user_value"] <= rule["max"] else "🔴 Needs Attention"
-    return "❓"
-
-# Display Results
-st.markdown("### 📊 Your Financial Rule Check")
-
+# Evaluate and display
+st.markdown("### 📋 Your Results")
 met_count = 0
+summary_lines = []
+
 for r in rules:
-    status = evaluate_rule(r)
+    status = ""
+    if "min" in r and "max" in r:
+        if r["min"] <= r["user"] <= r["max"]:
+            status = "🟢 On Track"
+        elif r["user"] >= 0.5 * r["min"]:
+            status = "🟡 Almost There"
+        else:
+            status = "🔴 Needs Attention"
+    elif "min" in r:
+        status = "🟢 On Track" if r["user"] >= r["min"] else "🔴 Needs Attention"
+    elif "max" in r:
+        status = "🟢 On Track" if r["user"] <= r["max"] else "🔴 Needs Attention"
+
     if status.startswith("🟢"):
         met_count += 1
-    st.write(f"**{r['category']}** — {r['rule']} → **{status}**")
 
-st.success(f"🎯 You’ve met {met_count}/9 financial thumb rules.")
+    st.write(f"**{r['name']}** — {r['rule']} → {status}")
+    summary_lines.append(f"{r['name']} ({r['rule']}): {status}")
 
-# PDF generation
-class PDF(FPDF):
-    def header(self):
-        self.set_font("Arial", 'B', 14)
-        self.cell(0, 10, "Smart Money Map – Financial Summary", ln=True, align='C')
+# Progress message
+st.success(f"🎯 Progress: {met_count}/9 rules met")
 
-    def footer(self):
-        self.set_y(-15)
-        self.set_font("Arial", 'I', 8)
-        self.cell(0, 10, f"Generated on {datetime.now().strftime('%d-%b-%Y')}", 0, 0, 'C')
+# Create downloadable TXT summary
+today = datetime.now().strftime("%d-%b-%Y")
+txt_summary = f"""SMART MONEY MAP – Financial Summary
+Generated on: {today}
 
-    def add_summary(self, ctc, savings_rate, monthly_take_home, monthly_savings, rules):
-        self.set_font("Arial", size=12)
-        self.ln(10)
-        self.cell(0, 10, f"Annual CTC: ₹{ctc:.2f} L", ln=True)
-        self.cell(0, 10, f"Savings Rate: {savings_rate:.0f}%", ln=True)
-        self.cell(0, 10, f"Monthly Take-Home: ₹{monthly_take_home/1e5:.2f} L", ln=True)
-        self.cell(0, 10, f"Monthly Savings: ₹{monthly_savings/1e3:.1f} K", ln=True)
-        self.ln(5)
+INPUTS:
+- Annual CTC: ₹{ctc:.2f} L
+- Savings Rate: {savings_rate:.0f}%
+- Monthly Take-Home: ₹{monthly_take_home / 1e5:.2f} L
+- Monthly Savings: ₹{monthly_savings / 1e3:.1f} K
 
-        self.set_font("Arial", 'B', 12)
-        self.cell(0, 10, "Rule Check Summary:", ln=True)
-        self.set_font("Arial", size=11)
+RULE CHECK RESULTS:
+"""
 
-        for r in rules:
-            status = evaluate_rule(r)
-            self.multi_cell(0, 8, f"- {r['category']} ({r['rule']}): {status}")
+for line in summary_lines:
+    txt_summary += f"- {line}\n"
 
-        self.ln(5)
-        self.set_font("Arial", 'B', 12)
-        self.cell(0, 10, f"Progress: {met_count}/9 rules met", ln=True)
+txt_summary += f"\nTOTAL: {met_count}/9 thumb rules met.\n"
 
-# Create and serve PDF
-pdf = PDF()
-pdf.add_page()
-pdf.add_summary(ctc, savings_rate, monthly_take_home, monthly_savings, rules)
-pdf_output = pdf.output(dest='S').encode('latin-1')
+if met_count == 9:
+    txt_summary += "🎉 CONGRATULATIONS! You're on top of your finances.\n"
+elif met_count >= 6:
+    txt_summary += "👏 You're doing well! Tidy up the rest.\n"
+elif met_count >= 3:
+    txt_summary += "👍 You're getting started. Focus on protection and planning.\n"
+else:
+    txt_summary += "💪 It's never too late to take control. Start with the basics.\n"
 
-b64_pdf = base64.b64encode(pdf_output).decode()
-href = f'<a href="data:application/octet-stream;base64,{b64_pdf}" download="Smart_Money_Map.pdf">📄 Download Your Financial Plan (PDF)</a>'
-st.markdown(href, unsafe_allow_html=True)
+txt_summary += "\nDISCLAIMER: This is a thumb-rule-based tool, not personalized advice.\n"
+
+# Download button
+st.download_button(
+    label="📄 Download My Financial Plan (TXT)",
+    data=txt_summary,
+    file_name=f"smart_money_map_{today}.txt",
+    mime="text/plain"
+)
