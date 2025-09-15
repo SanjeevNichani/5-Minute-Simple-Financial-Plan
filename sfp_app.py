@@ -5,8 +5,8 @@ from datetime import datetime
 
 # Page configuration
 st.set_page_config(
-    page_title="Smart Money Map",
-    page_icon="💰",
+    page_title="5 Minute Financial Plan",
+    page_icon="📝",
     layout="wide"
 )
 
@@ -34,26 +34,26 @@ st.markdown("""
 # Main title with purple gradient background
 st.markdown("""
 <div class="main-title">
-    <h1>💰 SMART MONEY MAP</h1>
-    <h3>Get a Super Simple Financial Plan in 5 minutes!</h3>
+    <h1>💰 5 Minute Financial Plan</h1>
+    <h3> No Jargon, No Fluff. Just a Super Simple Plan!</h3>
 </div>
 """, unsafe_allow_html=True)
 
 # Intro text
 st.markdown("""
-Using your annual CTC and monthly savings rate,
-this tool recommends limits on saving, spending, and investing —based on commonly accepted "thumb-rules".
-Think of it as your first-draft financial plan and checklist.
+Let’s make your money work for you!<br>
+Using your income and saving-rate% , this app recommends practical limits for your saving, spending and investing.<br><br>
+NO phone number/email required!.
+""", unsafe_allow_html=True)
 
-""")
 
 # User Input Section - 2 columns side by side with simple borders
-st.markdown("### 👤 Let's Start With Your Details")
+st.markdown("### 🧍 Let's Start With Your Details")
 input_col1, input_col2 = st.columns(2)
 
 with input_col1:
     with st.container(border=True):
-        st.markdown("#### 💰 Enter your Annual CTC (Lakhs)")
+        st.markdown("#### 🧾 Enter your Annual CTC (Lakhs)")
         ctc = st.slider(
             "Select your CTC:",
             min_value=10.0,
@@ -81,18 +81,18 @@ monthly_take_home = 0.75 * ctc * 1e5 / 12  # assuming 25% deductions
 monthly_expenses = (100 - savings_rate) * 1e-2 * monthly_take_home
 
 # Calculated Metrics - 2 columns side by side with simple borders
-st.markdown("### 📈 Your Financial Summary")
+st.markdown("### 🔄 Your Monthly Cash-Flow")
 metric_col1, metric_col2 = st.columns(2)
 
 with metric_col1:
     with st.container(border=True):
-        st.markdown("#### 💳 Monthly Take-Home")
+        st.markdown("#### 💼 Monthly Take-Home")
         st.markdown(f"### ₹{monthly_take_home*1e-5:.2f} L")
         st.caption("*After 25% deductions for PF+Tax")
 
 with metric_col2:
     with st.container(border=True):
-        st.markdown("#### 💰 Monthly Savings")
+        st.markdown("#### 🐖 Monthly Savings")
         st.markdown(f"### ₹{savings_rate*1e-2*monthly_take_home*1e-3:.1f} K")
         st.caption(f"*{savings_rate:.0f}% of your take-home salary")
 
@@ -164,7 +164,7 @@ with col6:
 # Count checked boxes and show progress
 total_checked = sum(st.session_state.checkboxes)
 st.markdown("---")
-st.success(f"🎯 **Progress: {total_checked}/9 thumb rules completed!**")
+st.success(f"🎯 **Great: You've fulfilled {total_checked} out of 9 thumb rules!**")
 
 # Notes section with grey styling and single column
 st.markdown("""
@@ -205,7 +205,7 @@ rule_details = [
 
 # Create a summary for download with checkbox status
 summary_text = f"""
-SMART MONEY MAP - Financial Plan Summary
+5 Minute Financial Plan
 Generated on: {today}
 
 INPUT DETAILS:
@@ -223,20 +223,19 @@ for i, (name, detail) in enumerate(zip(rule_names, rule_details)):
     summary_text += f"{i+1}. {detail} - {status}\n"
 
 summary_text += f"""
-PROGRESS SUMMARY: {total_checked}/9 thumb rules completed
-
+🎯 **Great: You've fulfilled {total_checked} out of 9 thumb rules!
 """
 
 # Add congratulations text at the bottom
 congratulations_text = ""
 if total_checked == 9:
-    congratulations_text = f"🎉 CONGRATULATIONS! You've completed all {total_checked} out of 9 thumb rules. You're on an excellent financial track!"
+    congratulations_text = f"🎉 CONGRATULATIONS! You've completed all {total_checked} out of 9 thumb rules. You're Top-Gun!"
 elif total_checked >= 6:
     congratulations_text = f"👏 Great progress! You've completed {total_checked} out of 9 thumb rules. You're doing well financially."
 elif total_checked >= 3:
     congratulations_text = f"👍 Good start! You've completed {total_checked} out of 9 thumb rules. Keep working on the remaining areas."
 else:
-    congratulations_text = f"💪 You've completed {total_checked} out of 9 thumb rules. There's room for improvement - focus on the basics first!"
+    congratulations_text = f"💪 You've completed {total_checked} out of 9 thumb rules. There's room for improvements!"
 
 summary_text += f"""{congratulations_text}
 
