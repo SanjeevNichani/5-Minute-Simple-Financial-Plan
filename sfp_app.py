@@ -11,8 +11,8 @@ st.set_page_config(
 )
 
 # Main title
-st.title("💰 SMART MONEY MAP")
-st.subheader("Your Super Simple Financial Plan")
+st.title("SMART MONEY MAP")
+st.subheader(" Get a Super Simple Financial Plan in 5 minutes!")
 
 # Intro text
 st.markdown("""
@@ -165,15 +165,22 @@ total_checked = sum(st.session_state.checkboxes)
 st.markdown("---")
 st.success(f"🎯 **Progress: {total_checked}/9 thumb rules completed!**")
 
-# Notes section (replaces your print statements)
-st.markdown("---")
-st.markdown("### 📝 Notes & Assumptions")
+# Notes section with attractive styling
 st.markdown("""
-1. CTC is gross annual income in LPA.
-2. Approx 25% of CTC is assumed for tax + PF deductions.
-3. These are thumb-rule suggestions, NOT personalized financial advice.
-4. All values rounded to nearest ₹K, ₹L or ₹Cr as needed.
-""")
+<div class="notes-section">
+    <h3>📝 Notes & Assumptions</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+        <div>
+            <p><strong>💼 CTC:</strong> Gross annual income in LPA</p>
+            <p><strong>💰 Deductions:</strong> 25% assumed for tax + PF</p>
+        </div>
+        <div>
+            <p><strong>⚖️ Disclaimer:</strong> Thumb-rule suggestions, NOT personalized advice</p>
+            <p><strong>📊 Rounding:</strong> Values rounded to nearest ₹K, ₹L or ₹Cr</p>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # Download functionality (NEW FEATURE!)
 st.markdown("---")
@@ -252,3 +259,4 @@ st.download_button(
 
 # Footer
 st.markdown("---")
+st.markdown("*💡 Download the summary for future reference!*")
