@@ -41,8 +41,8 @@ st.markdown("""
 
 # Intro text
 st.markdown("""
-Using your income and saving-rate% , this app recommends practical limits for your saving, spending and investing.<br><br>
-NO phone number/email required!
+Using your income and % savings-rate , this app recommends practical limits for your saving, spending and investing.<br><br>
+NO phone number or email required!
 """, unsafe_allow_html=True)
 
 st.markdown("---")
@@ -112,7 +112,7 @@ st.markdown("### 🛡️ STAGE 1: PROTECTION")
 col1, col2 = st.columns([4, 1])
 with col1:
     df1 = pd.DataFrame({
-        "Category": ["Emergency Fund", "Health Insurance", "Life Insurance"],
+        "Category": ["Emergency Fund", "Health Insurance", "Term-Life Insurance"],
         "Thumb Rule": ["3–6× Monthly Expenses", "₹5L – ₹10L", "10–15× Annual CTC"],
         "Min Value": [f"₹{monthly_expenses*3/1e5:.1f} L", "₹5L", f"₹{ctc*10*1e-2:.2f} Cr"],
         "Max Value": [f"₹{monthly_expenses*6/1e5:.1f} L", "₹10L", f"₹{ctc*15*1e-2:.2f} Cr"]
@@ -123,7 +123,7 @@ with col2:
     st.markdown("**I'm on track:**")
     st.session_state.checkboxes[0] = st.checkbox("Emergency Fund", key="check0")
     st.session_state.checkboxes[1] = st.checkbox("Health Insurance", key="check1") 
-    st.session_state.checkboxes[2] = st.checkbox("Life Insurance", key="check2")
+    st.session_state.checkboxes[2] = st.checkbox("Term-Life Insurance", key="check2")
 
 # Table 2: SPENDING LIMITS (replaces your df2)
 st.markdown("### 💳 STAGE 2: SPENDING LIMITS")
@@ -172,9 +172,9 @@ st.markdown("""
     <h3>📝 Notes & Assumptions</h3>
     <div style="margin-top: 15px;">
         <p><strong>💼 CTC:</strong> Gross annual income in LPA</p>
-        <p><strong>💰 Deductions:</strong> 25% assumed for tax + PF</p>
+        <p><strong>🔻 Deductions:</strong> 25% assumed for tax + PF</p>
         <p><strong>⚖️ Disclaimer:</strong> Thumb-rule suggestions, NOT personalized advice</p>
-        <p><strong>📊 Rounding:</strong> Values rounded to nearest ₹K, ₹L or ₹Cr</p>
+        <p><strong>➰ Rounding:</strong> Values rounded to nearest ₹K, ₹L or ₹Cr</p>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -186,7 +186,7 @@ st.markdown(f"📅 **Snapshot Date:** {today}")
 
 # Create detailed status for each rule
 rule_names = [
-    "Emergency Fund", "Health Insurance", "Life Insurance",
+    "Emergency Fund", "Health Insurance", "Term-Life Insurance",
     "Car Budget", "Home Purchase Price", "Personal Loans + Credit Cards", "All EMIs Combined",
     "Monthly SIP", "Retirement Corpus Planning"
 ]
@@ -194,7 +194,7 @@ rule_names = [
 rule_details = [
     f"Emergency Fund: {monthly_expenses*3/1e5:.1f}L - {monthly_expenses*6/1e5:.1f}L",
     "Health Insurance: ₹5L - ₹10L",
-    f"Life Insurance: {ctc*10*1e-2:.2f}Cr - {ctc*15*1e-2:.2f}Cr",
+    f"Term-Life Insurance: {ctc*10*1e-2:.2f}Cr - {ctc*15*1e-2:.2f}Cr",
     f"Car Budget: ≤ ₹{ctc*0.6:.2f}L",
     f"Home Purchase: ≤ ₹{ctc*4*1e-2:.2f}Cr", 
     "Personal Loans & Credit Cards: Zero",
@@ -223,9 +223,6 @@ for i, (name, detail) in enumerate(zip(rule_names, rule_details)):
     status = "✅ MET" if st.session_state.checkboxes[i] else "❌ NOT MET"
     summary_text += f"{i+1}. {detail} :  {status}\n"
 
-summary_text += f"""
-🎯 **Great: You've fulfilled {total_checked} out of 9 thumb rules!
-"""
 
 # Add congratulations text at the bottom
 congratulations_text = ""
@@ -256,3 +253,39 @@ st.download_button(
 
 # Footer
 st.markdown("---")
+
+
+
+st.markdown("### 📤 Share Your Financial Plan")
+
+# Replace with your actual Streamlit app URL
+app_url = "https://smart-money-map-simple-financial-plan-cr3jpyw7kefqt8unce4tru.streamlit.app/"
+
+st.markdown(f"""
+Want to help a friend plan better too?  
+**Share this free tool with them:**
+
+📎 **Link:**  
+`{app_url}`
+""")
+
+# Button to copy link to clipboard
+st.code(app_url, language='text')
+
+# Optional: Add a share message or CTA
+st.markdown("👉 Just copy the link and send it on WhatsApp, email, or wherever!")
+
+# Bonus: Use HTML for a nicer copy prompt
+st.markdown(f"""
+<a href="{app_url}" target="_blank">
+    <button style="background-color:#4CAF50;border:none;color:white;padding:10px 20px;text-align:center;text-decoration:none;display:inline-block;font-size:16px;border-radius:5px;">
+        🔗 Open or Share This App
+    </button>
+</a>
+""", unsafe_allow_html=True)
+
+st.markdown("---")
+
+st.markdown(f"""
+Want to talk to us? Drop an email to contact@pragatipeople.com
+""")
