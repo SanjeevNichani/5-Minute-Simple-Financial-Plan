@@ -42,7 +42,7 @@ st.markdown("""
 # Intro text
 st.markdown("""
 Using your income and % savings-rate , this app recommends practical limits for your saving, spending and investing.<br><br>
-NO phone number or email required!
+**NO phone number or email required!**
 """, unsafe_allow_html=True)
 
 st.markdown("---")
@@ -256,7 +256,7 @@ st.markdown("---")
 
 
 
-st.markdown("### 📤 Share Your Financial Plan")
+st.markdown("### 📤 Share (Optional)")
 
 # Replace with your actual Streamlit app URL
 app_url = "https://smart-money-map-simple-financial-plan-cr3jpyw7kefqt8unce4tru.streamlit.app/"
@@ -265,17 +265,7 @@ st.markdown(f"""
 Want to help a friend plan better too?  
 **Share this free tool with them:**
 
-📎 **Link:**  
-`{app_url}`
-""")
-
-# Button to copy link to clipboard
-st.code(app_url, language='text')
-
-# Optional: Add a share message or CTA
-st.markdown("👉 Just copy the link and send it on WhatsApp, email, or wherever!")
-
-# Bonus: Use HTML for a nicer copy prompt
+# Use HTML for a nicer copy prompt
 st.markdown(f"""
 <a href="{app_url}" target="_blank">
     <button style="background-color:#4CAF50;border:none;color:white;padding:10px 20px;text-align:center;text-decoration:none;display:inline-block;font-size:16px;border-radius:5px;">
@@ -287,5 +277,5 @@ st.markdown(f"""
 st.markdown("---")
 
 st.markdown(f"""
-Want to talk to us? Drop an email to contact@pragatipeople.com
+Want to talk to us? Send an email to contact@pragatipeople.com
 """)
