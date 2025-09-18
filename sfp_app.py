@@ -287,45 +287,22 @@ st.markdown("### 🚀 Share This With a Friend")
 st.markdown("Know someone who could benefit from this tool?")
 
 # Show the referral message in a code block for visibility
-st.code(referral_msg, language='text')
 
-# Copy-to-clipboard button with "Copied!" confirmation
-copy_html = f"""
-    <div>
-        <button onclick="copyText()" style="
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-        ">
-            📋 Copy to Clipboard
-        </button>
-        <span id="copy-confirm" style="margin-left: 15px; color: green; font-weight: bold;"></span>
-    </div>
-
-    <script>
-        function copyText() {{
-            const text = `{referral_msg}`;
-            navigator.clipboard.writeText(text).then(function() {{
-                var confirmBox = document.getElementById("copy-confirm");
-                confirmBox.innerText = "✅ Copied!";
-                setTimeout(function() {{
-                    confirmBox.innerText = "";
-                }}, 2000); // Hide after 2 seconds
-            }});
-        }}
-    </script>
+referral_msg = """Check out this awesome free tool for creating a 5-minute financial plan!
+✅ No sign-up required — no email or phone number needed.  
+🧠 Super simple, secure, and effective.  
+Try it here: https://smart-money-map-simple-financial-plan-cr3jpyw7kefqt8unce4tru.streamlit.app/
 """
 
-st.markdown(copy_html, unsafe_allow_html=True)
+st.markdown("### 🚀 Share This With a Friend")
+st.markdown("Know someone who could benefit from this tool?")
+st.code(referral_msg, language='text')
 
-st.markdown("---")
+if st.button("📋 Copy to Clipboard"):
+    st.experimental_set_clipboard(referral_msg)
+    st.success("✅ Copied to clipboard!")
+
+
 
 # --- Closing Thank You Message ---
 st.markdown("""Thanks for using **5 Min Fin-Plan** 🙏""")
