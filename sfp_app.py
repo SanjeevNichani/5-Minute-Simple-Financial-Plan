@@ -270,12 +270,13 @@ Try it here: https://smart-money-map-simple-financial-plan-cr3jpyw7kefqt8unce4tr
 """
 
 # --- Completion Acknowledgment ---
+
+st.success("You’ve just taken a huge step toward financial clarity. Well done!")
+
+st.markdown("### 🧭 Need help applying this?")
 st.markdown("""
-You’ve just taken a huge step toward financial clarity. Well done!
-
-### 🧭 Need help applying this?
-
 Want to talk through your plan with a real person?  
 Send me an email at [📧 contact@pragatipeople.com](mailto:contact@pragatipeople.com)
 """)
+
 
