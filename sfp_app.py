@@ -328,6 +328,5 @@ st.markdown(copy_html, unsafe_allow_html=True)
 st.markdown("---")
 
 # --- Closing Thank You Message ---
-st.markdown("Thanks for using **5 Min Fin-Plan** 🙏  
-You’re not just planning better — you’re helping others do the same.")
+st.markdown("""Thanks for using **5 Min Fin-Plan** 🙏""")
 
