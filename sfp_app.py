@@ -284,24 +284,7 @@ st.markdown("---")
 
 # --- Share with a Friend Section ---
 st.markdown("### 🚀 Share This With a Friend")
-st.markdown("Know someone who could benefit from this tool?")
-
-# Show the referral message in a code block for visibility
-
-referral_msg = """Check out this awesome free tool for creating a 5-minute financial plan!
-✅ No sign-up required — no email or phone number needed.  
-🧠 Super simple, secure, and effective.  
-Try it here: https://smart-money-map-simple-financial-plan-cr3jpyw7kefqt8unce4tru.streamlit.app/
-"""
-
-st.markdown("### 🚀 Share This With a Friend")
-st.markdown("Know someone who could benefit from this tool?")
-st.code(referral_msg, language='text')
-
-if st.button("📋 Copy to Clipboard"):
-    st.experimental_set_clipboard(referral_msg)
-    st.success("✅ Copied to clipboard!")
-
+st.markdown("Know someone who could benefit from this tool? Simply forward them this same URL")
 
 
 # --- Closing Thank You Message ---
