@@ -69,15 +69,17 @@ with input_col1:
 
 with input_col2:
     with st.container(border=True):
-        st.markdown("#### 💸 How much % can you save")
-        savings_rate = st.slider(
-            "Select % you can save:",
-            min_value=10.0,
-            max_value=100.0, 
-            value=50.0,
-            step=5.0,
-            help="What percentage of your monthly take-home can you save?"
-        )
+        
+     st.markdown("#### 💸 How much can you comfortably save?")
+savings_rate = st.slider(
+    "Estimate your savings as a % of your take-home:",
+    min_value=10.0,
+    max_value=100.0, 
+    value=50.0,
+    step=5.0,
+    help="Not sure about the percentage? No worries — move the slider until the monthly savings (shown below) feels realistic to you."
+)
+
 
 
 # Your original calculations (unchanged)
@@ -278,15 +280,3 @@ st.markdown("""
 Want to talk through your plan with a real person?  
 Send me an email at [📧 contact@pragatipeople.com](mailto:contact@pragatipeople.com)
 """)
-
-
-st.markdown("---")
-
-# --- Share with a Friend Section ---
-st.markdown("### 🚀 Share This With a Friend")
-st.markdown("Know someone who could benefit from this tool? Simply forward them this same URL")
-
-
-# --- Closing Thank You Message ---
-st.markdown("""Thanks for using **5 Min Fin-Plan** 🙏""")
-
