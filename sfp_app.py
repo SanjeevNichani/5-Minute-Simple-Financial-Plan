@@ -40,10 +40,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Intro text
+
 st.markdown("""
-Using your income and % savings-rate , this app recommends practical limits for your saving, spending and investing.<br><br>
-**NO phone number or email required!**
-""", unsafe_allow_html=True)
+Using your income and savings rate, this app recommends practical limits for saving, spending, and investing.  
+
+**No phone number. No email. No spam.**  
+Just your own private plan.
+""")
+
 
 st.markdown("---")
 
@@ -256,18 +260,74 @@ st.markdown("---")
 
 
 
-st.markdown("### 📤 Share (Optional)")
+# --- Referral Message ---
+referral_msg = """Check out this awesome free tool for creating a 5-minute financial plan!
+✅ No sign-up required — no email or phone number needed.  
+🧠 Super simple, secure, and effective.  
+Try it here: https://smart-money-map-simple-financial-plan-cr3jpyw7kefqt8unce4tru.streamlit.app/
+"""
 
+# --- Completion Acknowledgment ---
+st.markdown("## 🎉 You're Done!")
+st.success("You’ve just taken a huge step toward financial clarity. Well done!")
 
-st.markdown(f"""
-Want to help a friend plan better too?  
-Share this free tool with them:  
-**https://smart-money-map-simple-financial-plan-cr3jpyw7kefqt8unce4tru.streamlit.app/**
+# --- Contact Invitation ---
+st.markdown("### 🧭 Need help applying this?")
+
+st.markdown("""
+Want to talk through your plan with a real person?  
+Send me an email at [📧 contact@pragatipeople.com](mailto:contact@pragatipeople.com)
 """)
 
 
 st.markdown("---")
 
-st.markdown(f"""
-Want to talk to us? Send an email to contact@pragatipeople.com
-""")
+# --- Share with a Friend Section ---
+st.markdown("### 🚀 Share This With a Friend")
+st.markdown("Know someone who could benefit from this tool?")
+
+# Show the referral message in a code block for visibility
+st.code(referral_msg, language='text')
+
+# Copy-to-clipboard button with "Copied!" confirmation
+copy_html = f"""
+    <div>
+        <button onclick="copyText()" style="
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        ">
+            📋 Copy to Clipboard
+        </button>
+        <span id="copy-confirm" style="margin-left: 15px; color: green; font-weight: bold;"></span>
+    </div>
+
+    <script>
+        function copyText() {{
+            const text = `{referral_msg}`;
+            navigator.clipboard.writeText(text).then(function() {{
+                var confirmBox = document.getElementById("copy-confirm");
+                confirmBox.innerText = "✅ Copied!";
+                setTimeout(function() {{
+                    confirmBox.innerText = "";
+                }}, 2000); // Hide after 2 seconds
+            }});
+        }}
+    </script>
+"""
+
+st.markdown(copy_html, unsafe_allow_html=True)
+
+st.markdown("---")
+
+# --- Closing Thank You Message ---
+st.markdown("Thanks for using **5 Min Fin-Plan** 🙏  
+You’re not just planning better — you’re helping others do the same.")
+
