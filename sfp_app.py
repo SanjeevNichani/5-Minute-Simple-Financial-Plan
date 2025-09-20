@@ -118,13 +118,23 @@ st.markdown("### 🛡️ STAGE 1: PROTECTION")
 # Create checkboxes for table 1
 col1, col2 = st.columns([4, 1])
 with col1:
-    df1 = pd.DataFrame({
-        "Category": ["Emergency Fund", "Health Insurance", "Term-Life Insurance"],
-        "Thumb Rule": ["3–6× Monthly Expenses", "₹5L – ₹10L", "10–15× Annual CTC"],
-        "Min Value": [f"₹{monthly_expenses*3/1e5:.1f} L", "₹5L", f"₹{ctc*10*1e-2:.2f} Cr"],
-        "Max Value": [f"₹{monthly_expenses*6/1e5:.1f} L", "₹10L", f"₹{ctc*15*1e-2:.2f} Cr"]
-    })
-    st.dataframe(df1, use_container_width=True, hide_index=True)
+df1 = pd.DataFrame({
+    "Category": ["Emergency Fund", "Health Insurance", "Term-Life Insurance"],
+    "Thumb Rule": ["3–6× Monthly Expenses", "₹5L – ₹10L", "10–15× Annual CTC"],
+    "Min Value": [f"₹{monthly_expenses*3/1e5:.1f} L", "₹5L", f"₹{ctc*10*1e-2:.2f} Cr"],
+    "Max Value": [f"₹{monthly_expenses*6/1e5:.1f} L", "₹10L", f"₹{ctc*15*1e-2:.2f} Cr"]
+})
+
+# 👇 HTML scroll wrapper added here
+scrollable_html = f"""
+<div style="overflow-x: auto; width: 100%; border: 1px solid #ccc; border-radius: 6px; padding: 8px;">
+  {df1.to_html(index=False)}
+</div>
+"""
+
+# 👇 Show the HTML inside Streamlit
+st.markdown(scrollable_html, unsafe_allow_html=True)
+
 
 with col2:
     st.markdown("**I'm on track:**")
@@ -202,7 +212,7 @@ st.markdown("""
 <div class="notes-section">
     <h3>📝 Notes & Assumptions</h3>
     <div style="margin-top: 15px;">
-        <p><strong>➰ Simplification:</strong> This plan excludes age, risk apetite or dependents </p>
+        <p><strong>➰ Simplification:</strong> This plan EXCLUDES age, risk apetite or dependents </p>
         <p><strong>💼 CTC:</strong> Gross annual income in LPA</p>
         <p><strong>🔻 Deductions:</strong> 25% assumed for tax + PF</p>
         <p><strong>⚖️ Disclaimer:</strong> Thumb-rule suggestions, NOT personalized advice</p>
@@ -247,6 +257,8 @@ MONTHLY CASHFLOWS:
 - Monthly Take-Home: ₹{monthly_take_home*1e-5:.2f} L
 - Monthly Savings: ₹{savings_rate*1e-2*monthly_take_home*1e-3:.1f} K
 
+**If you see any garbage characters in this TXT file, please use another viewer app to read the same TXT file.
+
 CHECKLIST:
 """
 
@@ -270,7 +282,7 @@ else:
 summary_text += f"""{congratulations_text}
 
 NOTES:
-- This simple plan excludes age, risk apetite or dependents
+- This simple plan EXCLUDES age, risk apetite or dependents
 - CTC is gross annual income in LPA
 - 25% deductions assumed for tax + PF
 - These are thumb-rule suggestions, NOT personalized financial advice
@@ -278,7 +290,7 @@ NOTES:
 """
 
 st.download_button(
-    label="📄 Download Your Financial Plan",
+    label="📄 Download Your Financial Plan TXT",
     data=summary_text,
     file_name=f"financial_plan_{today}.txt",
     mime="text/plain"
@@ -305,7 +317,7 @@ st.success("You’ve just taken a huge step toward financial clarity. Well done!
 st.markdown("### 🧭 Need help applying this?")
 st.markdown("""
 Want to talk through your plan with a real person?  
-Send me an email at [📧 contact@pragatipeople.com](mailto:contact@pragatipeople.com)
+Send an email to Sanjeev at [📧 contact@pragatipeople.com](mailto:contact@pragatipeople.com)
 """)
 
 
