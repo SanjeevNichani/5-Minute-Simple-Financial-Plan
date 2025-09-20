@@ -44,8 +44,9 @@ st.markdown("""
 st.markdown("""
 Using your income and savings rate, this app recommends practical limits for saving, spending, and investing.  
 
-**No phone number. No email. No spam.**  
-Just your own private plan.
+> **No phone number. No email.**  
+> **No app installs. No spying.**  
+> _Just a private tool that runs in your browser._
 """)
 
 
@@ -60,7 +61,7 @@ with input_col1:
         st.markdown("#### 🧾 Enter your Annual CTC (Lakhs)")
         ctc = st.slider(
             "Select your CTC:",
-            min_value=10.0,
+            min_value=1.0,
             max_value=100.0,
             value=25.0,
             step=1.0,
@@ -167,16 +168,41 @@ with col6:
     st.session_state.checkboxes[7] = st.checkbox("Monthly SIP", key="check7")
     st.session_state.checkboxes[8] = st.checkbox("Retirement Planning", key="check8")
 
-# Count checked boxes and show progress
+# --- Progress Tracking ---
 total_checked = sum(st.session_state.checkboxes)
+total_rules = 9
+progress_ratio = total_checked / total_rules
+
+# --- Progress Bar ---
+st.progress(progress_ratio)
+
+# --- Emoji-Based Progress Message (Adventure Style) ---
+if total_checked == 0:
+    st.info("🚶 Just getting started — the journey has begun!")
+
+elif total_checked < 4:
+    st.info("🥾 You’ve taken the first few steps. Keep climbing!")
+
+elif total_checked < 7:
+    st.info("⛰️ You’re halfway there — keep climbing!")
+
+elif total_checked < 9:
+    st.info("🏔️ Almost at the summit — just a few steps left!")
+
+else:
+    st.success("🏆 You’ve nailed all 9 thumb rules — treasure unlocked!")
+
+# --- Final Summary Line ---
 st.markdown("---")
-st.success(f"🎯 **Great: You've fulfilled {total_checked} out of 9 thumb rules!**")
+st.success(f"🎯 **Great: You've fulfilled {total_checked} out of {total_rules} thumb rules!**")
+
 
 # Notes section with grey styling and single column
 st.markdown("""
 <div class="notes-section">
     <h3>📝 Notes & Assumptions</h3>
     <div style="margin-top: 15px;">
+        <p><strong>➰ Simplification:</strong> This plan excludes age, risk apetite or dependents </p>
         <p><strong>💼 CTC:</strong> Gross annual income in LPA</p>
         <p><strong>🔻 Deductions:</strong> 25% assumed for tax + PF</p>
         <p><strong>⚖️ Disclaimer:</strong> Thumb-rule suggestions, NOT personalized advice</p>
@@ -244,6 +270,7 @@ else:
 summary_text += f"""{congratulations_text}
 
 NOTES:
+- This simple plan excludes age, risk apetite or dependents
 - CTC is gross annual income in LPA
 - 25% deductions assumed for tax + PF
 - These are thumb-rule suggestions, NOT personalized financial advice
@@ -256,6 +283,8 @@ st.download_button(
     file_name=f"financial_plan_{today}.txt",
     mime="text/plain"
 )
+
+
 
 # Footer
 st.markdown("---")
