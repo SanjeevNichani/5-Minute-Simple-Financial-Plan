@@ -117,23 +117,25 @@ st.markdown("### 🛡️ STAGE 1: PROTECTION")
 
 # Create checkboxes for table 1
 col1, col2 = st.columns([4, 1])
+
 with col1:
-df1 = pd.DataFrame({
-    "Category": ["Emergency Fund", "Health Insurance", "Term-Life Insurance"],
-    "Thumb Rule": ["3–6× Monthly Expenses", "₹5L – ₹10L", "10–15× Annual CTC"],
-    "Min Value": [f"₹{monthly_expenses*3/1e5:.1f} L", "₹5L", f"₹{ctc*10*1e-2:.2f} Cr"],
-    "Max Value": [f"₹{monthly_expenses*6/1e5:.1f} L", "₹10L", f"₹{ctc*15*1e-2:.2f} Cr"]
-})
+    df1 = pd.DataFrame({
+        "Category": ["Emergency Fund", "Health Insurance", "Term-Life Insurance"],
+        "Thumb Rule": ["3–6× Monthly Expenses", "₹5L – ₹10L", "10–15× Annual CTC"],
+        "Min Value": [f"₹{monthly_expenses*3/1e5:.1f} L", "₹5L", f"₹{ctc*10*1e-2:.2f} Cr"],
+        "Max Value": [f"₹{monthly_expenses*6/1e5:.1f} L", "₹10L", f"₹{ctc*15*1e-2:.2f} Cr"]
+    })
 
-# 👇 HTML scroll wrapper added here
-scrollable_html = f"""
-<div style="overflow-x: auto; width: 100%; border: 1px solid #ccc; border-radius: 6px; padding: 8px;">
-  {df1.to_html(index=False)}
-</div>
-"""
+    # 👇 HTML scroll wrapper added here
+    scrollable_html = f"""
+    <div style="overflow-x: auto; width: 100%; border: 1px solid #ccc; border-radius: 6px; padding: 8px;">
+      {df1.to_html(index=False)}
+    </div>
+    """
 
-# 👇 Show the HTML inside Streamlit
-st.markdown(scrollable_html, unsafe_allow_html=True)
+    # 👇 Show the HTML inside Streamlit
+    st.markdown(scrollable_html, unsafe_allow_html=True)
+
 
 
 with col2:
