@@ -71,14 +71,14 @@ with input_col1:
 with input_col2:
     with st.container(border=True):
         
-     st.markdown("#### 💸 How much can you comfortably save?")
+     st.markdown("#### 💸 How much can you save?")
 savings_rate = st.slider(
     "Estimate your savings as a % of your take-home:",
     min_value=10.0,
     max_value=100.0, 
     value=50.0,
     step=5.0,
-    help="Not sure about the percentage? No worries — move the slider until the monthly savings (shown below) feels realistic to you."
+    help="Don't know %savings? Just move the slider until the monthly savings below feel realistic."
 )
 
 
