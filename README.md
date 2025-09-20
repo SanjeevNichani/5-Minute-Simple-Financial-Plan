@@ -1,6 +1,6 @@
 # Smart Money Map – Personal Finance Snapshot Tool
 
-A simple Python utility to generate a personal finance planning map based on your annual CTC.  
+A simple calculator to generate a personal finance plan, based on your annual CTC.  
 Applies Indian thumb rules to help you check if you're on track — across Protection, Spending, and Wealth Building.
 
 ---
@@ -57,6 +57,7 @@ Website = https://www.pragatipeople.com/
 ## 🛡License
 
 This project is licensed under the [MIT License](LICENSE).
+
 
 
 
