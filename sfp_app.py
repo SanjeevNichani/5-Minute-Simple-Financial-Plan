@@ -112,37 +112,41 @@ st.info("💡 **How to use**: Check the boxes below for areas where you meet the
 if 'checkboxes' not in st.session_state:
     st.session_state.checkboxes = [False] * 9  # 9 total checkboxes
 
+
+
+
+
+
 # Table 1: PROTECTION (replaces your df1)
+
+
 st.markdown("### 🛡️ STAGE 1: PROTECTION")
 
 # Create checkboxes for table 1
 col1, col2 = st.columns([4, 1])
 
 with col1:
+    # 🧩 Ordered: Category → Min → Max → Thumb Rule
     df1 = pd.DataFrame({
         "Category": ["Emergency Fund", "Health Insurance", "Term-Life Insurance"],
-        "Thumb Rule": ["3–6× Monthly Expenses", "₹5L – ₹10L", "10–15× Annual CTC"],
         "Min Value": [f"₹{monthly_expenses*3/1e5:.1f} L", "₹5L", f"₹{ctc*10*1e-2:.2f} Cr"],
-        "Max Value": [f"₹{monthly_expenses*6/1e5:.1f} L", "₹10L", f"₹{ctc*15*1e-2:.2f} Cr"]
+        "Max Value": [f"₹{monthly_expenses*6/1e5:.1f} L", "₹10L", f"₹{ctc*15*1e-2:.2f} Cr"],
+        "Thumb Rule": ["3–6× Monthly Expenses", "₹5L – ₹10L", "10–15× Annual CTC"]
     })
 
-    # 👇 HTML scroll wrapper added here
-    scrollable_html = f"""
-    <div style="overflow-x: auto; width: 100%; border: 1px solid #ccc; border-radius: 6px; padding: 8px;">
-      {df1.to_html(index=False)}
-    </div>
-    """
-
-    # 👇 Show the HTML inside Streamlit
-    st.markdown(scrollable_html, unsafe_allow_html=True)
-
-
+    # 👇 Swipe/scroll hint
+    
+    st.dataframe(df1, use_container_width=True, hide_index=True)
+    st.caption("➡️ Swipe right to see full table on smaller screens")
 
 with col2:
     st.markdown("**I'm on track:**")
     st.session_state.checkboxes[0] = st.checkbox("Emergency Fund", key="check0")
     st.session_state.checkboxes[1] = st.checkbox("Health Insurance", key="check1") 
     st.session_state.checkboxes[2] = st.checkbox("Term-Life Insurance", key="check2")
+
+
+
 
 # Table 2: SPENDING LIMITS (replaces your df2)
 st.markdown("### 💳 STAGE 2: SPENDING LIMITS")
@@ -151,10 +155,12 @@ col3, col4 = st.columns([4, 1])
 with col3:
     df2 = pd.DataFrame({
         "Category": ["Car Budget", "Home Purchase Price", "Personal Loans + Credit Card Dues", "All EMIs Combined"],
-        "Thumb Rule": ["≤ 60% of CTC", "≤ 4× Annual CTC", "Ideally zero", "≤ 45% of Monthly Take Home"],
-        "Max Value": [f"₹{ctc*0.6:.2f} L", f"₹{ctc*4*1e-2:.2f} Cr", "Zero", f"₹{monthly_take_home*0.45*1e-3:.1f} K"]
+        "Max Value": [f"₹{ctc*0.6:.2f} L", f"₹{ctc*4*1e-2:.2f} Cr", "Zero", f"₹{monthly_take_home*0.45*1e-3:.1f} K"],
+        "Thumb Rule": ["≤ 60% of CTC", "≤ 4× Annual CTC", "Ideally zero", "≤ 45% of Monthly Take Home"]
+        
     })
     st.dataframe(df2, use_container_width=True, hide_index=True)
+    st.caption("➡️ Swipe right to see full table on smaller screens")
 
 with col4:
     st.markdown("**I'm on track:**")
@@ -170,10 +176,11 @@ col5, col6 = st.columns([4, 1])
 with col5:
     df3 = pd.DataFrame({
         "Category": ["Monthly SIP", "Retirement Corpus"],
-        "Thumb Rule": ["> 20% of CTC", ">10x Annual CTC"],
-        "Min Value": [f"₹{ctc*0.20*1e2/12:.0f} K", f"₹{ctc*10*1e-2:.2f} Cr"]
+        "Min Value": [f"₹{ctc*0.20*1e2/12:.0f} K", f"₹{ctc*10*1e-2:.2f} Cr"],
+        "Thumb Rule": ["> 20% of CTC", ">10x Annual CTC"]
     })
     st.dataframe(df3, use_container_width=True, hide_index=True)
+    st.caption("➡️ Swipe right to see full table on smaller screens")
 
 with col6:
     st.markdown("**I'm on track:**")
@@ -214,7 +221,7 @@ st.markdown("""
 <div class="notes-section">
     <h3>📝 Notes & Assumptions</h3>
     <div style="margin-top: 15px;">
-        <p><strong>➰ Simplification:</strong> This plan EXCLUDES age, risk apetite or dependents </p>
+        <p><strong>✂️ Simplification:</strong> This plan EXCLUDES age, risk apetite or dependents </p>
         <p><strong>💼 CTC:</strong> Gross annual income in LPA</p>
         <p><strong>🔻 Deductions:</strong> 25% assumed for tax + PF</p>
         <p><strong>⚖️ Disclaimer:</strong> Thumb-rule suggestions, NOT personalized advice</p>
